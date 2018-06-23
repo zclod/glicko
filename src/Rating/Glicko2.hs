@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+
 module Rating.Glicko2
     (
     Rating (..),
@@ -6,7 +7,9 @@ module Rating.Glicko2
     rate
     ) where
 
-import           Lens.Micro ((^.), _2, over, mapped)
+import           Data.List (findIndex)
+import           Data.Maybe (fromJust)
+import           Lens.Micro ((^.), _1, _2, over, mapped)
 import           Lens.Micro.TH (makeLenses)
 
 
@@ -114,6 +117,7 @@ matches = [(Win, p2), (Loss, p3), (Loss, p4)]
 
 rate 0.000001 0.5 p1 matches
 
+R {_mu = 1464.0506862574757, _phi = 151.51649099996536, _sigma = 5.998752260758929e-2}
 
 r = scaleDown p1
 r
