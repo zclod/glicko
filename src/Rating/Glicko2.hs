@@ -6,7 +6,7 @@ module Rating.Glicko2
     rate
     ) where
 
-import           Lens.Micro ((^.))
+import           Lens.Micro ((^.), _2, over, mapped)
 import           Lens.Micro.TH (makeLenses)
 
 
