@@ -3,10 +3,13 @@ module Rating.Glicko2
     (
     Rating (..),
     MatchRes (..),
+    mu, phi, sigma,
     rate
     ) where
 
-import           Lens.Micro ((^.), _2, over, mapped)
+import           Data.Maybe (fromJust)
+import           Data.List (findIndex)
+import           Lens.Micro ((^.), _1, _2, over, mapped)
 import           Lens.Micro.TH (makeLenses)
 
 
