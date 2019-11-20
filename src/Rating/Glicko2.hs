@@ -5,7 +5,8 @@ module Rating.Glicko2
     Rating (..),
     MatchRes (..),
     mu, phi, sigma,
-    rate
+    rate,
+    winExpectancy, stdWinExpectancy
     ) where
 
 import           Data.List (findIndex)
@@ -104,6 +105,19 @@ rate epsilon tau currentRating matches = scaleUp $ R mu' phi' sigma'
         mu' = r^.mu + phi' ^ 2 * sum (zipWith (*)
                                      (fmap (\m -> g (m^._2.phi)) ms)
                                      (fmap (\m -> (resScore (m^._1)) - (e (r^.mu) (m^._2.mu) (m^._2.phi))) ms))
+
+winExpectancy :: Rating -> Rating -> Double
+winExpectancy a b = (e ma mb phib) / ((e ma mb phib) + (e mb ma phia))
+    where ma = al^.mu
+          mb = bl^.mu
+          phia = al^.phi
+          phib = bl^.phi
+          al = scaleDown a
+          bl = scaleDown b
+
+-- from http://www.glicko.net/ratings/rating.system.pdf
+stdWinExpectancy :: Rating -> Rating -> Double
+stdWinExpectancy a b = 1 / (1 + (10 ** (-(a^.mu - b^.mu)/400)))
 
 {-
 
